@@ -11,7 +11,8 @@ const numPad = document.getElementById('numPad');
 const buttons = ['7', '8', '9', '+',
                  '4', '5', '6', '-',
                  '1', '2', '3', '*',
-                 'C', '0', '=', '/'
+                 'C', '0', '00', '=', 
+                 '/', 'CE', '.', '%'
 ];
 
 //Variables to store current state
@@ -42,6 +43,12 @@ function handleButtonClick(btnText) {
         //If the button is a number
         currentInput += btnText;
         screen.innerText = currentInput;
+    } else if (btnText === '.') {
+        //handle decimal point
+        if (!currentInput.includes('.')) {
+            currentInput += '.';
+            screen.innerText = currentInput;
+        }    
     } else if (['+', '-', '*', '/'].includes(btnText)){
         //If the button is an operator
         if (currentInput !== '') {
@@ -64,6 +71,22 @@ function handleButtonClick(btnText) {
         previousValue = '';
         operator = '';
         screen.innerText = '0';
+    } else if (btnText === 'CE') {
+        //Clear last Entry 
+        currentInput = '';
+        screen.innerText = previousValue || '0';
+    } else if (btnText === '√') {
+        //Calculate Square Root
+        if (currentInput !== '') {
+            currentInput = Math.sqrt(parseFloat(currentInput)).toString();
+            screen.innerText = currentInput;
+        }
+    } else if (btnText === '%') {
+        //Calculate Percentage
+        if (previousValue && currentInput) {
+            currentInput = ((parseFloat(previousInput) * parseFloat(currentInput)) / 100).toString();
+            screen.innerText = currentInput;
+        }
     }
 }
 
